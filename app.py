@@ -16,7 +16,16 @@ Powered by Roboflow [Inference](https://github.com/roboflow/inference) and [Supe
 """
 
 # Load models
+# yolo_world = YOLOWorld(model_id="yolo_world/s")
+# yolo_world = YOLOWorld(model_id="yolo_world/m")
 yolo_world = YOLOWorld(model_id="yolo_world/l")
+# yolo_world = YOLOWorld(model_id="yolo_world/x")
+
+# yolo_world = YOLOWorld(model_id="yolo_world/v2-s")
+# yolo_world = YOLOWorld(model_id="yolo_world/v2-m")
+# yolo_world = YOLOWorld(model_id="yolo_world/v2-l")
+# yolo_world = YOLOWorld(model_id="yolo_world/v2-x")
+
 device = "cuda" if torch.cuda.is_available() else "cpu"
 sam = EfficientViTSamPredictor(
     create_sam_model(name="xl1", weight_url="./weights/xl1.pt").to(device).eval()
@@ -59,7 +68,8 @@ def detect(
     # Annotation
     output_image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     labels = [
-        f"{categories[class_id]}: {confidence:.2f}"
+        # f"{categories[class_id]}: {confidence:.2f}"
+        f"{categories[class_id]}: {confidence:.3f}"
         for class_id, confidence in zip(detections.class_id, detections.confidence)
     ]
     output_image = MASK_ANNOTATOR.annotate(output_image, detections)
@@ -81,7 +91,7 @@ with gr.Blocks() as demo:
                 confidence_threshold_component = gr.Slider(
                     minimum=0,
                     maximum=1,
-                    value=0.3,
+                    value=0.005,
                     step=0.01,
                     label="Confidence Threshold",
                 )
