@@ -4,6 +4,7 @@ import gradio as gr
 import numpy as np
 import supervision as sv
 import torch
+from typing import List
 from inference.models import YOLOWorld
 
 from efficientvit.models.efficientvit.sam import EfficientViTSamPredictor
@@ -42,15 +43,39 @@ MASK_ANNOTATOR = sv.MaskAnnotator()
 LABEL_ANNOTATOR = sv.LabelAnnotator()
 
 
-def detect(
+def process_categories(categories: str) -> List[str]:
+    return [category.strip() for category in categories.split(",")]
+
+
+def annotate_image(
+    input_image: np.ndarray,
+    detections: sv.Detections,
+    categories: List[str],
+    with_confidence: bool = False,
+) -> np.ndarray:
+    labels = [
+        (
+            f"{categories[class_id]}: {confidence:.3f}"
+            if with_confidence
+            else f"{categories[class_id]}"
+        )
+        for class_id, confidence in zip(detections.class_id, detections.confidence)
+    ]
+    output_image = MASK_ANNOTATOR.annotate(input_image, detections)
+    output_image = BOUNDING_BOX_ANNOTATOR.annotate(output_image, detections)
+    output_image = LABEL_ANNOTATOR.annotate(output_image, detections, labels=labels)
+    return output_image
+
+
+def process_image(
     image: np.ndarray,
-    query: str,
+    categories: str,
     confidence_threshold: float,
     nms_threshold: float,
     with_confidence: bool = True,
 ) -> np.ndarray:
     # Preparation.
-    categories = [category.strip() for category in query.split(",")]
+    categories = process_categories(categories)
     yolo_world.set_classes(categories)
     # print("categories:", categories)
 
@@ -72,17 +97,13 @@ def detect(
 
     # Annotation
     output_image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    labels = [
-        (
-            f"{categories[class_id]}: {confidence:.3f}"
-            if with_confidence
-            else f"{categories[class_id]}"
-        )
-        for class_id, confidence in zip(detections.class_id, detections.confidence)
-    ]
-    output_image = MASK_ANNOTATOR.annotate(output_image, detections)
-    output_image = BOUNDING_BOX_ANNOTATOR.annotate(output_image, detections)
-    output_image = LABEL_ANNOTATOR.annotate(output_image, detections, labels=labels)
+    output_image = annotate_image(
+        input_image=output_image,
+        detections=detections,
+        categories=categories,
+        with_confidence=with_confidence,
+    )
+
     return cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB)
 
 
@@ -140,7 +161,7 @@ with gr.Blocks() as demo:
         yolo_world_output_image_component = gr.Image(type="numpy", label="Output image")
     submit_button_component = gr.Button(value="Submit", scale=1, variant="primary")
     gr.Examples(
-        fn=detect,
+        # fn=process_image,
         examples=[
             [
                 os.path.join(os.path.dirname(__file__), "examples/livingroom.jpg"),
@@ -165,7 +186,7 @@ with gr.Blocks() as demo:
     )
 
     submit_button_component.click(
-        fn=detect,
+        fn=process_image,
         inputs=[
             input_image_component,
             image_categories_text_component,
