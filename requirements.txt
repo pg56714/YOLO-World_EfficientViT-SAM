@@ -8,5 +8,5 @@ onnxsim
 segment_anything
 
 # 2024-07-14
-# interence：The confidence score values in the new version of YOLO-World are abnormal due to a bug
+# interence: The confidence score values in the new version of YOLO-World are abnormal due to a bug
 # inference[yolo-world]==0.13.0
