@@ -37,7 +37,7 @@ sam = EfficientViTSamPredictor(
 
 
 # Load annotators
-BOUNDING_BOX_ANNOTATOR = sv.BoundingBoxAnnotator()
+BOUNDING_BOX_ANNOTATOR = sv.BoxAnnotator()
 MASK_ANNOTATOR = sv.MaskAnnotator()
 LABEL_ANNOTATOR = sv.LabelAnnotator()
 
