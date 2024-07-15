@@ -16,7 +16,9 @@ Use Anaconda to create a new environment and install the required packages.
 ```bash
 # Create and activate a python 3.10 environment.
 conda create -n yolo-world-efficientvit-sam python=3.10 -y
+
 conda activate yolo-world-efficientvit-sam
+
 pip install -r requirements.txt
 ```
 
