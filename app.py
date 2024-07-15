@@ -73,6 +73,7 @@ def process_image(
     confidence_threshold: float,
     nms_threshold: float,
     with_confidence: bool = True,
+    with_segmentation: bool = True,
 ) -> np.ndarray:
     # Preparation.
     categories = process_categories(categories)
@@ -87,13 +88,14 @@ def process_image(
     # print("detected:", detections)
 
     # Segmentation
-    sam.set_image(image, image_format="RGB")
-    masks = []
-    for xyxy in detections.xyxy:
-        mask, _, _ = sam.predict(box=xyxy, multimask_output=False)
-        masks.append(mask.squeeze())
-    detections.mask = np.array(masks)
-    # print("masks shaped as", detections.mask.shape)
+    if with_segmentation:
+        sam.set_image(image, image_format="RGB")
+        masks = []
+        for xyxy in detections.xyxy:
+            mask, _, _ = sam.predict(box=xyxy, multimask_output=False)
+            masks.append(mask.squeeze())
+        detections.mask = np.array(masks)
+        # print("masks shaped as", detections.mask.shape)
 
     # Annotation
     output_image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
@@ -142,6 +144,12 @@ with_confidence_component = gr.Checkbox(
     info=("Whether to display the confidence of the detected objects."),
 )
 
+with_segmentation_component = gr.Checkbox(
+    value=True,
+    label="With Segmentation",
+    info=("Whether to run EfficientViT-SAM for instance segmentation."),
+)
+
 
 with gr.Blocks() as demo:
     gr.Markdown(MARKDOWN)
@@ -161,6 +169,7 @@ with gr.Blocks() as demo:
         iou_threshold_component.render()
         with gr.Row():
             with_confidence_component.render()
+            with_segmentation_component.render()
     gr.Examples(
         # fn=process_image,
         examples=[
@@ -169,12 +178,16 @@ with gr.Blocks() as demo:
                 "table, lamp, dog, sofa, plant, clock, carpet, frame on the wall",
                 0.05,
                 0.5,
+                True,
+                True,
             ],
             [
                 os.path.join(os.path.dirname(__file__), "examples/cat_and_dogs.jpg"),
                 "cat, dog",
                 0.2,
                 0.5,
+                True,
+                True,
             ],
         ],
         inputs=[
@@ -182,6 +195,8 @@ with gr.Blocks() as demo:
             image_categories_text_component,
             confidence_threshold_component,
             iou_threshold_component,
+            with_confidence_component,
+            with_segmentation_component,
         ],
         outputs=yolo_world_output_image_component,
     )
@@ -194,6 +209,7 @@ with gr.Blocks() as demo:
             confidence_threshold_component,
             iou_threshold_component,
             with_confidence_component,
+            with_segmentation_component,
         ],
         outputs=yolo_world_output_image_component,
     )
