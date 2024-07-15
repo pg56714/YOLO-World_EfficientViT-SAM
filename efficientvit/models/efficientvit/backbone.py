@@ -5,9 +5,17 @@
 import torch
 import torch.nn as nn
 
-from efficientvit.models.nn import (ConvLayer, DSConv, EfficientViTBlock,
-                                    FusedMBConv, IdentityLayer, MBConv,
-                                    OpSequential, ResBlock, ResidualBlock)
+from efficientvit.models.nn import (
+    ConvLayer,
+    DSConv,
+    EfficientViTBlock,
+    FusedMBConv,
+    IdentityLayer,
+    MBConv,
+    OpSequential,
+    ResBlock,
+    ResidualBlock,
+)
 from efficientvit.models.utils import build_kwargs_from_config
 
 __all__ = [
@@ -41,7 +49,7 @@ class EfficientViTBackbone(nn.Module):
         # input stem
         self.input_stem = [
             ConvLayer(
-                in_channels=3,
+                in_channels=in_channels,
                 out_channels=width_list[0],
                 stride=2,
                 norm=norm,
@@ -239,11 +247,7 @@ class EfficientViTLargeBackbone(nn.Module):
         for stage_id, (w, d) in enumerate(zip(width_list[1:], depth_list[1:]), start=1):
             stage = []
             block = self.build_local_block(
-                block=(
-                    "mb"
-                    if block_list[stage_id] not in ["mb", "fmb"]
-                    else block_list[stage_id]
-                ),
+                block="mb" if block_list[stage_id] not in ["mb", "fmb"] else block_list[stage_id],
                 in_channels=in_channels,
                 out_channels=w,
                 stride=2,

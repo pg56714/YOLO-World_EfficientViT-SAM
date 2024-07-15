@@ -5,11 +5,17 @@
 import torch
 import torch.nn as nn
 
-from efficientvit.models.efficientvit.backbone import (
-    EfficientViTBackbone, EfficientViTLargeBackbone)
-from efficientvit.models.nn import (ConvLayer, DAGBlock, FusedMBConv,
-                                    IdentityLayer, MBConv, OpSequential,
-                                    ResidualBlock, UpSampleLayer)
+from efficientvit.models.efficientvit.backbone import EfficientViTBackbone, EfficientViTLargeBackbone
+from efficientvit.models.nn import (
+    ConvLayer,
+    DAGBlock,
+    FusedMBConv,
+    IdentityLayer,
+    MBConv,
+    OpSequential,
+    ResidualBlock,
+    UpSampleLayer,
+)
 from efficientvit.models.utils import build_kwargs_from_config
 
 __all__ = [
@@ -44,9 +50,7 @@ class SegHead(DAGBlock):
         for fid, in_channel, stride in zip(fid_list, in_channel_list, stride_list):
             factor = stride // head_stride
             if factor == 1:
-                inputs[fid] = ConvLayer(
-                    in_channel, head_width, 1, norm=norm, act_func=None
-                )
+                inputs[fid] = ConvLayer(in_channel, head_width, 1, norm=norm, act_func=None)
             else:
                 inputs[fid] = OpSequential(
                     [
@@ -84,13 +88,7 @@ class SegHead(DAGBlock):
                     (
                         None
                         if final_expand is None
-                        else ConvLayer(
-                            head_width,
-                            head_width * final_expand,
-                            1,
-                            norm=norm,
-                            act_func=act_func,
-                        )
+                        else ConvLayer(head_width, head_width * final_expand, 1, norm=norm, act_func=act_func)
                     ),
                     ConvLayer(
                         head_width * (final_expand or 1),
@@ -105,15 +103,11 @@ class SegHead(DAGBlock):
             )
         }
 
-        super(SegHead, self).__init__(
-            inputs, "add", None, middle=middle, outputs=outputs
-        )
+        super(SegHead, self).__init__(inputs, "add", None, middle=middle, outputs=outputs)
 
 
 class EfficientViTSeg(nn.Module):
-    def __init__(
-        self, backbone: EfficientViTBackbone or EfficientViTLargeBackbone, head: SegHead
-    ) -> None:
+    def __init__(self, backbone: EfficientViTBackbone or EfficientViTLargeBackbone, head: SegHead) -> None:
         super().__init__()
         self.backbone = backbone
         self.head = head
@@ -126,8 +120,7 @@ class EfficientViTSeg(nn.Module):
 
 
 def efficientvit_seg_b0(dataset: str, **kwargs) -> EfficientViTSeg:
-    from efficientvit.models.efficientvit.backbone import \
-        efficientvit_backbone_b0
+    from efficientvit.models.efficientvit.backbone import efficientvit_backbone_b0
 
     backbone = efficientvit_backbone_b0(**kwargs)
 
@@ -152,8 +145,7 @@ def efficientvit_seg_b0(dataset: str, **kwargs) -> EfficientViTSeg:
 
 
 def efficientvit_seg_b1(dataset: str, **kwargs) -> EfficientViTSeg:
-    from efficientvit.models.efficientvit.backbone import \
-        efficientvit_backbone_b1
+    from efficientvit.models.efficientvit.backbone import efficientvit_backbone_b1
 
     backbone = efficientvit_backbone_b1(**kwargs)
 
@@ -192,8 +184,7 @@ def efficientvit_seg_b1(dataset: str, **kwargs) -> EfficientViTSeg:
 
 
 def efficientvit_seg_b2(dataset: str, **kwargs) -> EfficientViTSeg:
-    from efficientvit.models.efficientvit.backbone import \
-        efficientvit_backbone_b2
+    from efficientvit.models.efficientvit.backbone import efficientvit_backbone_b2
 
     backbone = efficientvit_backbone_b2(**kwargs)
 
@@ -232,8 +223,7 @@ def efficientvit_seg_b2(dataset: str, **kwargs) -> EfficientViTSeg:
 
 
 def efficientvit_seg_b3(dataset: str, **kwargs) -> EfficientViTSeg:
-    from efficientvit.models.efficientvit.backbone import \
-        efficientvit_backbone_b3
+    from efficientvit.models.efficientvit.backbone import efficientvit_backbone_b3
 
     backbone = efficientvit_backbone_b3(**kwargs)
 
@@ -272,8 +262,7 @@ def efficientvit_seg_b3(dataset: str, **kwargs) -> EfficientViTSeg:
 
 
 def efficientvit_seg_l1(dataset: str, **kwargs) -> EfficientViTSeg:
-    from efficientvit.models.efficientvit.backbone import \
-        efficientvit_backbone_l1
+    from efficientvit.models.efficientvit.backbone import efficientvit_backbone_l1
 
     backbone = efficientvit_backbone_l1(**kwargs)
 
@@ -314,8 +303,7 @@ def efficientvit_seg_l1(dataset: str, **kwargs) -> EfficientViTSeg:
 
 
 def efficientvit_seg_l2(dataset: str, **kwargs) -> EfficientViTSeg:
-    from efficientvit.models.efficientvit.backbone import \
-        efficientvit_backbone_l2
+    from efficientvit.models.efficientvit.backbone import efficientvit_backbone_l2
 
     backbone = efficientvit_backbone_l2(**kwargs)
 
