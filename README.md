@@ -36,8 +36,8 @@ python app.py
 On the challenging LVIS dataset, YOLO-World achieves 35.4 AP with 52.0 FPS on V100,
 which outperforms many state-of-the-art methods in terms of both accuracy and speed.
 
-<img width="1024" src="https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/8a4a17bd-918d-478a-8451-f58e4a2dce79">
-<img width="1024" src="https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/fce57405-e18d-45f3-bea8-fc3971faf975">
+<img width="1024" src="https://raw.githubusercontent.com/pg56714/YOLO-World_EfficientViT-SAM/main/assets/yoloworld_1.png">
+<img width="1024" src="https://raw.githubusercontent.com/pg56714/YOLO-World_EfficientViT-SAM/main/assets/yoloworld_2.png">
 
 ### EfficientViT-SAM
 
@@ -45,8 +45,8 @@ which outperforms many state-of-the-art methods in terms of both accuracy and sp
 Thanks to the lightweight and hardware-efficient core building block,
 it delivers 48.9× measured TensorRT speedup on A100 GPU over SAM-ViT-H without sacrificing performance.
 
-<img width="1024" src="https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/9eec003f-47c9-43a5-86b0-82d6689e1bf9">
-<img width="1024" src="https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/d79973bb-0d80-4b64-a175-252de56d0d09">
+<img width="1024" src="https://raw.githubusercontent.com/pg56714/YOLO-World_EfficientViT-SAM/main/assets/efficientvitsam_1.png">
+<img width="1024" src="https://raw.githubusercontent.com/pg56714/YOLO-World_EfficientViT-SAM/main/assets/efficientvitsam_2.png">
 
 ## Citation
 
