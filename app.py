@@ -40,8 +40,6 @@ IMAGE_EXAMPLES = [
 # Load models
 YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/l")
 
-# interence：The confidence score values in the new version of YOLO-World are abnormal due to a bug
-# old version not support=============================
 # YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/s")
 # YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/m")
 # YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/x")
@@ -50,7 +48,6 @@ YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/l")
 # YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/v2-m")
 # YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/v2-l")
 # YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/v2-x")
-# =====================================================
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 sam = EfficientViTSamPredictor(
