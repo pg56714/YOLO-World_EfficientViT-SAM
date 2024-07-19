@@ -41,7 +41,7 @@ which outperforms many state-of-the-art methods in terms of both accuracy and sp
 
 ### EfficientViT-SAM
 
-[EfficientViT SAM](https://github.com/mit-han-lab/efficientvit) is a new family of accelerated segment anything models.
+[EfficientViT-SAM](https://github.com/mit-han-lab/efficientvit) is a new family of accelerated segment anything models.
 Thanks to the lightweight and hardware-efficient core building block,
 it delivers 48.9× measured TensorRT speedup on A100 GPU over SAM-ViT-H without sacrificing performance.
 
