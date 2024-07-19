@@ -15,20 +15,41 @@ MARKDOWN = """
 # YOLO-World + EfficientViT-SAM
 Powered by Roboflow [Inference](https://github.com/roboflow/inference) and [Supervision](https://github.com/roboflow/supervision) and [YOLO-World](https://github.com/AILab-CVC/YOLO-World) and [EfficientViT-SAM](https://github.com/mit-han-lab/efficientvit)
 """
+IMAGE_EXAMPLES = [
+    [
+        os.path.join(os.path.dirname(__file__), "images/livingroom.jpg"),
+        "table, lamp, dog, sofa, plant, clock, carpet, frame on the wall",
+        0.05,
+        0.5,
+        True,
+        # True,
+        True,
+    ],
+    [
+        os.path.join(os.path.dirname(__file__), "images/cat_and_dogs.jpg"),
+        "cat, dog",
+        0.2,
+        0.5,
+        True,
+        # True,
+        True,
+    ],
+]
+
 
 # Load models
-yolo_world = YOLOWorld(model_id="yolo_world/l")
+YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/l")
 
 # interence：The confidence score values in the new version of YOLO-World are abnormal due to a bug
 # old version not support=============================
-# yolo_world = YOLOWorld(model_id="yolo_world/s")
-# yolo_world = YOLOWorld(model_id="yolo_world/m")
-# yolo_world = YOLOWorld(model_id="yolo_world/x")
+# YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/s")
+# YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/m")
+# YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/x")
 
-# yolo_world = YOLOWorld(model_id="yolo_world/v2-s")
-# yolo_world = YOLOWorld(model_id="yolo_world/v2-m")
-# yolo_world = YOLOWorld(model_id="yolo_world/v2-l")
-# yolo_world = YOLOWorld(model_id="yolo_world/v2-x")
+# YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/v2-s")
+# YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/v2-m")
+# YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/v2-l")
+# YOLO_WORLD_MODEL = YOLOWorld(model_id="yolo_world/v2-x")
 # =====================================================
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -51,7 +72,7 @@ def annotate_image(
     input_image: np.ndarray,
     detections: sv.Detections,
     categories: List[str],
-    with_confidence: bool = False,
+    with_confidence: bool = True,
 ) -> np.ndarray:
     labels = [
         (
@@ -68,20 +89,23 @@ def annotate_image(
 
 
 def process_image(
-    image: np.ndarray,
+    input_image: np.ndarray,
     categories: str,
     confidence_threshold: float,
     nms_threshold: float,
     with_confidence: bool = True,
+    # with_class_agnostic_nms: bool = True,
     with_segmentation: bool = True,
 ) -> np.ndarray:
+    global exclude_positions
+
     # Preparation.
     categories = process_categories(categories)
-    yolo_world.set_classes(categories)
+    YOLO_WORLD_MODEL.set_classes(categories)
     # print("categories:", categories)
 
     # Object detection
-    results = yolo_world.infer(image, confidence=confidence_threshold)
+    results = YOLO_WORLD_MODEL.infer(input_image, confidence=confidence_threshold)
     detections = sv.Detections.from_inference(results).with_nms(
         class_agnostic=True, threshold=nms_threshold
     )
@@ -89,7 +113,7 @@ def process_image(
 
     # Segmentation
     if with_segmentation:
-        sam.set_image(image, image_format="RGB")
+        sam.set_image(input_image, image_format="RGB")
         masks = []
         for xyxy in detections.xyxy:
             mask, _, _ = sam.predict(box=xyxy, multimask_output=False)
@@ -98,7 +122,7 @@ def process_image(
         # print("masks shaped as", detections.mask.shape)
 
     # Annotation
-    output_image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    output_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2BGR)
     output_image = annotate_image(
         input_image=output_image,
         detections=detections,
@@ -144,12 +168,17 @@ with_confidence_component = gr.Checkbox(
     info=("Whether to display the confidence of the detected objects."),
 )
 
+# with_class_agnostic_nms_component = gr.Checkbox(
+#     value=True,
+#     label="Use Class-Agnostic NMS",
+#     info=("Suppress overlapping detections across different classes."),
+# )
+
 with_segmentation_component = gr.Checkbox(
     value=True,
     label="With Segmentation",
     info=("Whether to run EfficientViT-SAM for instance segmentation."),
 )
-
 
 with gr.Blocks() as demo:
     gr.Markdown(MARKDOWN)
@@ -169,33 +198,19 @@ with gr.Blocks() as demo:
         iou_threshold_component.render()
         with gr.Row():
             with_confidence_component.render()
+            # with_class_agnostic_nms_component.render()
             with_segmentation_component.render()
+
     gr.Examples(
         # fn=process_image,
-        examples=[
-            [
-                os.path.join(os.path.dirname(__file__), "examples/livingroom.jpg"),
-                "table, lamp, dog, sofa, plant, clock, carpet, frame on the wall",
-                0.05,
-                0.5,
-                True,
-                True,
-            ],
-            [
-                os.path.join(os.path.dirname(__file__), "examples/cat_and_dogs.jpg"),
-                "cat, dog",
-                0.2,
-                0.5,
-                True,
-                True,
-            ],
-        ],
+        examples=IMAGE_EXAMPLES,
         inputs=[
             input_image_component,
             image_categories_text_component,
             confidence_threshold_component,
             iou_threshold_component,
             with_confidence_component,
+            # with_class_agnostic_nms_component,
             with_segmentation_component,
         ],
         outputs=yolo_world_output_image_component,
@@ -209,6 +224,7 @@ with gr.Blocks() as demo:
             confidence_threshold_component,
             iou_threshold_component,
             with_confidence_component,
+            # with_class_agnostic_nms_component,
             with_segmentation_component,
         ],
         outputs=yolo_world_output_image_component,
