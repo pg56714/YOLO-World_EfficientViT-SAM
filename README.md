@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-<!-- [HuggingFace Space]() -->
+[HuggingFace Space](https://huggingface.co/spaces/pg56714/YOLO-World_EfficientViT-SAM)
 
 ![example1](/assets/example1.jpg)
 
