@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-<!-- [HuggingFace Space]() -->
+[HuggingFace Space](https://huggingface.co/spaces/pg56714/YOLO-World_EfficientViT-SAM)
 
 ![example1](/assets/example1.jpg)
 
@@ -35,12 +35,13 @@ python app.py
 [YOLO-World](https://github.com/AILab-CVC/YOLO-World) is an open-vocabulary object detection model with high efficiency.
 On the challenging LVIS dataset, YOLO-World achieves 35.4 AP with 52.0 FPS on V100,
 which outperforms many state-of-the-art methods in terms of both accuracy and speed.
-![image](https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/8a4a17bd-918d-478a-8451-f58e4a2dce79)
+
+<img width="1024" src="https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/8a4a17bd-918d-478a-8451-f58e4a2dce79">
 <img width="1024" src="https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/fce57405-e18d-45f3-bea8-fc3971faf975">
 
 ### EfficientViT-SAM
 
-[EfficientViT SAM](https://github.com/mit-han-lab/efficientvit) is a new family of accelerated segment anything models.
+[EfficientViT-SAM](https://github.com/mit-han-lab/efficientvit) is a new family of accelerated segment anything models.
 Thanks to the lightweight and hardware-efficient core building block,
 it delivers 48.9× measured TensorRT speedup on A100 GPU over SAM-ViT-H without sacrificing performance.
 
