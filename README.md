@@ -35,7 +35,8 @@ python app.py
 [YOLO-World](https://github.com/AILab-CVC/YOLO-World) is an open-vocabulary object detection model with high efficiency.
 On the challenging LVIS dataset, YOLO-World achieves 35.4 AP with 52.0 FPS on V100,
 which outperforms many state-of-the-art methods in terms of both accuracy and speed.
-![image](https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/8a4a17bd-918d-478a-8451-f58e4a2dce79)
+
+<img width="1024" src="https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/8a4a17bd-918d-478a-8451-f58e4a2dce79">
 <img width="1024" src="https://github.com/Curt-Park/yolo-world-with-efficientvit-sam/assets/14961526/fce57405-e18d-45f3-bea8-fc3971faf975">
 
 ### EfficientViT-SAM
