@@ -51,6 +51,13 @@ it delivers 48.9× measured TensorRT speedup on A100 GPU over SAM-ViT-H without 
 ## Citation
 
 ```
+@article{cheng2024yolow,
+  title={YOLO-World: Real-Time Open-Vocabulary Object Detection},
+  author={Cheng, Tianheng and Song, Lin and Ge, Yixiao and Liu, Wenyu and Wang, Xinggang and Shan, Ying},
+  journal={arXiv preprint arXiv:2401.17270},
+  year={2024}
+}
+
 @misc{zhang2024efficientvitsam,
   title={EfficientViT-SAM: Accelerated Segment Anything Model Without Performance Loss},
   author={Zhuoyang Zhang and Han Cai and Song Han},
@@ -58,12 +65,5 @@ it delivers 48.9× measured TensorRT speedup on A100 GPU over SAM-ViT-H without 
   eprint={2402.05008},
   archivePrefix={arXiv},
   primaryClass={cs.CV}
-}
-
-@article{cheng2024yolow,
-  title={YOLO-World: Real-Time Open-Vocabulary Object Detection},
-  author={Cheng, Tianheng and Song, Lin and Ge, Yixiao and Liu, Wenyu and Wang, Xinggang and Shan, Ying},
-  journal={arXiv preprint arXiv:2401.17270},
-  year={2024}
 }
 ```
