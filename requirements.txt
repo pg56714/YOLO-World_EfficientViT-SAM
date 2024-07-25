@@ -1,5 +1,5 @@
 gradio==4.19.2
-inference[yolo-world]==0.15.0
+inference[yolo-world]==0.9.13 # This model version is slightly better (but only for yolo_world/l).
 # inference-gpu[yolo-world]==0.15.0
 supervision
 timm
