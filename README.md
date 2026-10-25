@@ -28,3 +28,7 @@ PyTorch is installed from the CUDA 12.6 wheel index (`pytorch-cu126` in `pyproje
 ```bash
 uv run app.py
 ```
+
+## Security
+
+Dependency upgrades and the known remaining issues are recorded in [docs/security-log.md](docs/security-log.md) ([繁體中文](docs/security-log.zh-TW.md)).
