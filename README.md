@@ -1,5 +1,7 @@
 # YOLO-World_EfficientViT-SAM
 
+> **Security:** see [SECURITY.md](SECURITY.md) for known dependency issues.
+
 ## Getting Started
 
 [HuggingFace Space](https://huggingface.co/spaces/pg56714/YOLO-World_EfficientViT-SAM)
