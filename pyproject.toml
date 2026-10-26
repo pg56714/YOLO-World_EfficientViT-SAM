@@ -1,7 +1,7 @@
 [project]
 dependencies = [
     "gradio>=6.16.0",
-    "inference-gpu[yolo-world]>=0.30.0",
+    "inference[yolo-world]>=1.8.2",
     "onnxsim>=0.4.36",
     "ruff>=0.11.2",
     "segment-anything>=1.0",

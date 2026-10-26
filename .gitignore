@@ -169,3 +169,6 @@ src
 
 # Etc
 .DS_Store
+
+# Model weights
+weights/
